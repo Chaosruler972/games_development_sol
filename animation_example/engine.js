@@ -24,9 +24,72 @@ const game = function()
     const initModule = () =>
     {
         document.body.appendChild(canvas);
+        document.onkeydown = move;
         draw();
     };
 
+    /*
+        Keyboard control
+     */
+    const movement_percentage = 0.25;
+    const directions = { };
+
+    const up_key = 38; // up key configuration
+    const down_key = 40; // down key configuration
+    const left_key = 37; // left key configuration
+    const right_key = 39; // right key configuration
+
+    const up= 'up'; // game behvaior! DO NOT CHANGE
+    const down = 'down'; // game behvaior! DO NOT CHANGE
+    const left = 'left'; // game behvaior! DO NOT CHANGE
+    const right = 'right'; // game behvaior! DO NOT CHANGE
+
+    directions[up_key] = up;
+    directions[down_key] = down;
+    directions[left_key] = left;
+    directions[right_key] = right;
+
+    /*
+        on key press, moves if key is on direction configuration, checks and configures win or lose
+     */
+    const move = (event) =>
+    {
+        const keycode = event.which || event.keyCode; // case for different browsers
+        if(!keycode || !directions[keycode])
+        {
+            // noinspection UnnecessaryReturnStatementJS
+            return;
+        }
+        const direction = directions[keycode];
+        switch(direction)
+        {
+            case up:
+                    if(animation_object.y - canvas.height*movement_percentage > animation_object.height_on_canvas)
+                    {
+                        animation_object.y = animation_object.y - canvas.height*movement_percentage;
+                    }
+                    break;
+            case down:
+                    if(animation_object.y + canvas.height*movement_percentage < canvas.height - animation_object.height_on_canvas)
+                    {
+                        animation_object.y = animation_object.y + canvas.height*movement_percentage;
+                    }
+                    break;
+            case left:
+                    if(animation_object.x - canvas.width*movement_percentage > animation_object.width_on_canvas)
+                    {
+                        animation_object.x = animation_object.x - canvas.width*movement_percentage;
+                    }
+                    break;
+            case right:
+                    if(animation_object.x + canvas.width*movement_percentage < canvas.width - animation_object.width_on_canvas)
+                    {
+                        animation_object.x = animation_object.x + canvas.width*movement_percentage;
+                    }
+                    break;
+        }
+
+    };
 
     /*
         draws the grid (as a whole, function call internal)
